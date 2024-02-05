@@ -341,7 +341,44 @@ public class SortShow extends JPanel {
             lines_lengths[index] = tempArray[index];
     }
 
-    //////////////////////////////////////////////////////////////////////
+    //////////////////////////////// SHELL SORT ///////////////////////////////////////////////////
+
+    public  void ShellSort(){
+        //start time
+        Calendar start = Calendar.getInstance();
+        // Begin with a large space, then reduce the space by half each iteration
+        for(int space = total_number_of_lines/2;space>0;space=space/2){
+            for(int begin=0;begin < space;begin++){
+                // Call insertion sort that takes the space into account
+                incrementalInsertionSort(begin,total_number_of_lines-1,space);
+                paintComponent(this.getGraphics());
+                delay(10);
+            }
+
+        }
+        //end time
+        Calendar end = Calendar.getInstance();
+        //calculating total time taken and will be used to update the UI for total time taken for shell sort
+        SortGUI.shellTime = end.getTime().getTime() - start.getTime().getTime();
+    }
+
+    public void incrementalInsertionSort(int first,int last,int space){
+        int unSorted,index;
+        // Iterate over elements, jumping by space to perform insertion sort
+        for(unSorted=first+space;unSorted<=last;unSorted=unSorted+space){
+            // Store the current element to be sorted
+            int firstUnsorted=lines_lengths[unSorted];
+            // Compare and shift elements within the space;
+            for(index=unSorted-space;(index>=first) && (firstUnsorted < lines_lengths[index]);index=index-space){
+                // Shift the element to space position to make room for the unsorted element
+                lines_lengths[index+space] = lines_lengths[index];
+            }
+            // Insert the unsorted element into its correct position
+            lines_lengths[index+space] = firstUnsorted;
+        }
+
+    }
+
 
     //This method resets the window to the scrambled lines display
     public void reset() {
