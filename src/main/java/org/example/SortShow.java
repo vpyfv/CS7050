@@ -378,7 +378,86 @@ public class SortShow extends JPanel {
         }
 
     }
+    //////////////////////////////// QUICK SORT RECURSIVE ///////////////////////////////////////////////////
+    public void R_QuickSort(){
+        //capture start time of quick sort
+        Calendar start = Calendar.getInstance();
 
+        //call recursive quick sort
+        R_QuickSort(0,total_number_of_lines-1);
+
+        //capture end time of quick sort
+        Calendar end = Calendar.getInstance();
+
+        //calculate total time taken for shell time and update ui
+        SortGUI.shellTime = end.getTime().getTime() - start.getTime().getTime();
+    }
+
+    public void R_QuickSort(int first,int last){
+        paintComponent(this.getGraphics());
+        delay(10);
+
+        //if partition size is less than 5 then do insertion sort
+        if(last-first+1<3){
+            insertionSort(first,last);
+        }
+        else{
+            //get pivot index by doing partition
+            int pivotIndex = partition(first,last);
+
+            //sort array before pivot
+            R_QuickSort(first,pivotIndex-1);
+
+            //sort array after pivot
+            R_QuickSort(pivotIndex+1,last);
+        }
+    }
+
+    public int partition(int first,int last){
+        int mid = first+(last-first)/2;
+        sortFirstMiddleLast(first,mid,last);
+        swap(mid,last-1);
+        int pivotIndex=last-1;
+
+        int pivotValue = lines_lengths[pivotIndex];
+
+        int indexFromLeft = first+1;
+        int indexFromRight = last -2;
+
+        boolean done=false;
+        while(!done){
+            while(lines_lengths[indexFromLeft] < pivotValue)
+                indexFromLeft++;
+            while(lines_lengths[indexFromRight] > pivotValue)
+                indexFromRight--;
+
+            if(indexFromLeft<indexFromRight){
+                swap(indexFromLeft,indexFromRight);
+                indexFromLeft++;
+                indexFromRight--;
+            }
+            else{
+                done=true;
+            }
+        }
+        swap(pivotIndex,indexFromLeft);
+        pivotIndex=indexFromLeft;
+
+        return pivotIndex;
+    }
+
+    private void sortFirstMiddleLast(int first,int mid,int last){
+        order(first,mid);
+        order(mid,last);
+        order(first,mid);
+    }
+
+    private void order(int first,int last){
+        if(lines_lengths[first]>lines_lengths[last])
+            swap(first,last);
+    }
+
+    //////////////////////////////////////////////////////////////////////////////////////////
 
     //This method resets the window to the scrambled lines display
     public void reset() {
