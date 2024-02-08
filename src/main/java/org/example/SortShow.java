@@ -341,7 +341,123 @@ public class SortShow extends JPanel {
             lines_lengths[index] = tempArray[index];
     }
 
-    //////////////////////////////////////////////////////////////////////
+    //////////////////////////////// SHELL SORT ///////////////////////////////////////////////////
+
+    public  void ShellSort(){
+        //start time
+        Calendar start = Calendar.getInstance();
+        // Begin with a large space, then reduce the space by half each iteration
+        for(int space = total_number_of_lines/2;space>0;space=space/2){
+            for(int begin=0;begin < space;begin++){
+                // Call insertion sort that takes the space into account
+                incrementalInsertionSort(begin,total_number_of_lines-1,space);
+                paintComponent(this.getGraphics());
+                delay(10);
+            }
+
+        }
+        //end time
+        Calendar end = Calendar.getInstance();
+        //calculating total time taken and will be used to update the UI for total time taken for shell sort
+        SortGUI.shellTime = end.getTime().getTime() - start.getTime().getTime();
+    }
+
+    public void incrementalInsertionSort(int first,int last,int space){
+        int unSorted,index;
+        // Iterate over elements, jumping by space to perform insertion sort
+        for(unSorted=first+space;unSorted<=last;unSorted=unSorted+space){
+            // Store the current element to be sorted
+            int firstUnsorted=lines_lengths[unSorted];
+            // Compare and shift elements within the space;
+            for(index=unSorted-space;(index>=first) && (firstUnsorted < lines_lengths[index]);index=index-space){
+                // Shift the element to space position to make room for the unsorted element
+                lines_lengths[index+space] = lines_lengths[index];
+            }
+            // Insert the unsorted element into its correct position
+            lines_lengths[index+space] = firstUnsorted;
+        }
+
+    }
+    //////////////////////////////// QUICK SORT RECURSIVE ///////////////////////////////////////////////////
+    public void R_QuickSort(){
+        //capture start time of quick sort
+        Calendar start = Calendar.getInstance();
+
+        //call recursive quick sort
+        R_QuickSort(0,total_number_of_lines-1);
+
+        //capture end time of quick sort
+        Calendar end = Calendar.getInstance();
+
+        //calculate total time taken for shell time and update ui
+        SortGUI.shellTime = end.getTime().getTime() - start.getTime().getTime();
+    }
+
+    public void R_QuickSort(int first,int last){
+        paintComponent(this.getGraphics());
+        delay(10);
+
+        //if partition size is less than 5 then do insertion sort
+        if(last-first+1<3){
+            insertionSort(first,last);
+        }
+        else{
+            //get pivot index by doing partition
+            int pivotIndex = partition(first,last);
+
+            //sort array before pivot
+            R_QuickSort(first,pivotIndex-1);
+
+            //sort array after pivot
+            R_QuickSort(pivotIndex+1,last);
+        }
+    }
+
+    public int partition(int first,int last){
+        int mid = first+(last-first)/2;
+        sortFirstMiddleLast(first,mid,last);
+        swap(mid,last-1);
+        int pivotIndex=last-1;
+
+        int pivotValue = lines_lengths[pivotIndex];
+
+        int indexFromLeft = first+1;
+        int indexFromRight = last -2;
+
+        boolean done=false;
+        while(!done){
+            while(lines_lengths[indexFromLeft] < pivotValue)
+                indexFromLeft++;
+            while(lines_lengths[indexFromRight] > pivotValue)
+                indexFromRight--;
+
+            if(indexFromLeft<indexFromRight){
+                swap(indexFromLeft,indexFromRight);
+                indexFromLeft++;
+                indexFromRight--;
+            }
+            else{
+                done=true;
+            }
+        }
+        swap(pivotIndex,indexFromLeft);
+        pivotIndex=indexFromLeft;
+
+        return pivotIndex;
+    }
+
+    private void sortFirstMiddleLast(int first,int mid,int last){
+        order(first,mid);
+        order(mid,last);
+        order(first,mid);
+    }
+
+    private void order(int first,int last){
+        if(lines_lengths[first]>lines_lengths[last])
+            swap(first,last);
+    }
+
+    //////////////////////////////////////////////////////////////////////////////////////////
 
     //This method resets the window to the scrambled lines display
     public void reset() {
