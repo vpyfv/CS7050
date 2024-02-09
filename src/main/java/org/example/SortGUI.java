@@ -21,7 +21,6 @@ public class SortGUI {
 	public static double rmergeTime = 0.0;
 	//a variable that holds the amount of time for the iterative merge sort takes to execute
 	public static double imergeTime = 0.0;
-	//TODO: Add rest of algo
 	//a variable that holds the amount of time for the Bubble sort takes to execute
 	public static double bubbleTime = 0.0;
 	//a variable that holds the amount of time for the insertion sort takes to execute
@@ -36,7 +35,6 @@ public class SortGUI {
 	public boolean Recersive_Merge_Done = false;
 	//Boolean variable that is made to keep track whether or not the iterative merge sort has already been used
 	public boolean Iterative_Merge_Done = false;
-	//TODO: Add rest of algo
 	//Boolean variable that is made to keep track whether or not the bubble sort has already been used
 	public boolean Bubble_Done = false;
 	//Boolean variable that is made to keep track whether or not the insertion sort has already been used
@@ -74,7 +72,6 @@ public class SortGUI {
 		JRadioButton rmerge = new JRadioButton("Merge Recursive");
 		//making a iterative merge button with a text "Selection" on it
 		JRadioButton imerge = new JRadioButton("Merge Iterative");
-		//TODO: Add rest of algo
 		//making a bubble sort button with a text "Bubble" on it
  		JRadioButton bubble = new JRadioButton("Bubble");
 		//making a insertion sort button with a text "Insertion" on it
@@ -94,7 +91,6 @@ public class SortGUI {
 		//A label that displays the time it took for the iterative merge sort took to execute
 		JLabel imerge_time_label = new JLabel("Merge-Ita Time");
 		JLabel imerge_time_taken = new JLabel("");
-		//TODO: Add rest of algo
 		JLabel bubble_sort_label = new JLabel("Bubble");
 		//A label that displays the time it took for the bubble sort took to execute
 		JLabel bubble_time_taken = new JLabel("");
@@ -117,7 +113,6 @@ public class SortGUI {
 			rmerge_time_taken.setForeground(Color.RED);
 			//The time displayed for iterative merge sort will be the colour red
 			imerge_time_taken.setForeground(Color.RED);
-			//TODO: Add rest of algo
 			//The time displayed for bubble sort will be the colour red
 			bubble_time_taken.setForeground(Color.RED);
 			//The time displayed for insertion sort will be the colour red
@@ -132,7 +127,6 @@ public class SortGUI {
 			rmerge.setForeground(Color.BLUE);
 			//The iterative merge button text will be the colour blue
 			imerge.setForeground(Color.BLUE);
-			//TODO: Add rest of algo
 			//The bubble sort button text will be the colour blue
 			bubble.setForeground(Color.BLUE);
 			//The insertion sort button text will be the colour blue
@@ -154,7 +148,6 @@ public class SortGUI {
 			radio_button_selection_Panel.add(rmerge);
 			//Adding the iterative merge button to the radio_button_selection_Panel
 			radio_button_selection_Panel.add(imerge);
-			//TODO: Add rest of algo
 			//Adding the bubble sort button to the radio_button_selection_Panel
 			radio_button_selection_Panel.add(bubble);
 			//Adding the insertion sort button to the radio_button_selection_Panel
@@ -182,7 +175,6 @@ public class SortGUI {
 			time_Panel.add(imerge_time_label);
 			//Adding the imerge_time_taken to the time_Panel
 			time_Panel.add(imerge_time_taken);
-			//TODO: Add rest of algo
 			//Adding the buuble_sort_time_label to the time_Panel
 			time_Panel.add(bubble_sort_label);
 			//Adding the bubble_time_taken to the time_Panel
@@ -275,7 +267,6 @@ public class SortGUI {
 					enableResetButton();
 				}
 			});
-			//TODO: Add rest of algo
 			bubble.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -334,7 +325,6 @@ public class SortGUI {
 				}
 			});
 
-			//TODO: Add rest of algo
 			//Creating an action listener for reset button
 			reset.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
@@ -378,34 +368,11 @@ public class SortGUI {
 						quick.setEnabled(!Quick_Done);
 					}
 
-
-
-//					else if (Recersive_Merge_Done && Iterative_Merge_Done) {
-//						Set_Available_Chooses(true, false, false, true,false);
-//
-//					} else if (Selection_Done && Recersive_Merge_Done) {
-//
-//						Set_Available_Chooses(false, false, true, false,false);
-//
-//					} else if (Selection_Done && Iterative_Merge_Done) {
-//						Set_Available_Chooses(false, true, false, false,false);
-//
-//					} else if (Selection_Done) {
-//						Set_Available_Chooses(false, true, true, false,false);
-//
-//					} else if (Recersive_Merge_Done) {
-//						Set_Available_Chooses(true, false, true, false,false);
-//
-//					} else {
-//						Set_Available_Chooses(true, true, false, false,false);
-//
-//					}
 				}
 			});
 
 		}
 
-		//TODO: Add rest of algo
 		//A method that sets if the button are enabled or disabled
 		public void Set_Available_Chooses(boolean selection_state, boolean rmerge_state, boolean imerge_state,
 				boolean bubble_state,
