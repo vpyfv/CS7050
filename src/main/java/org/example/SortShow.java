@@ -68,23 +68,45 @@ public class SortShow extends JPanel {
 
     //////////////////////////////// BUBBLE SORT ///////////////////////////////////////////////////
 
+    /**
+     * Initiates the bubble sort algorithm to sort an array
+     * and calculates the time taken to perform the sort. The sort results are visually updated
+     * on a GUI component. The time taken for the sort operation is stored in a static variable
+     * of the SortGUI class for further use or display.
+     */
     public  void BubbleSort(){
+        // Capture the start time of the sort operation
         Calendar start = Calendar.getInstance();
+        // Call the BubbleSort method with the total number of lines to sort
         BubbleSort(total_number_of_lines);
+        // Capture the end time of the sort operation
         Calendar end = Calendar.getInstance();
+        // Calculate the time taken for the bubble sort and store it in a static variable of SortGUI class
         SortGUI.bubbleTime = end.getTime().getTime() - start.getTime().getTime();
 
     }
+
+    /**
+     * Performs the bubble sort algorithm recursively array named 'lines_lengths'
+     * which contains lengths of lines to be sorted.
+     *
+     * @param n The number of elements in the array that need to be sorted in the current recursion step.
+     */
     public void BubbleSort(int n){
+        // Check if the array has more than one element to sort
        if(n>1){
+           // Perform one pass of bubble sort
            for(int i=0;i<n-1;i++){
+               // If the current element is greater than the next one, swap them
                if(lines_lengths[i]>lines_lengths[i+1]){
                    swap(i,i+1);
                }
            }
+           // Repaint the component to visually represent the current state of the array with 10 ms delay
            paintComponent(this.getGraphics());
            delay(10);
 
+           // Recursive call to bubble sort the array with one less element
            BubbleSort(n-1);
        }
     }
@@ -113,48 +135,97 @@ public class SortShow extends JPanel {
         SortGUI.selectionTime = end.getTime().getTime() - start.getTime().getTime();
     }
 
-    //this method gets the smallest element in the array of lines_lengths
+    /**
+     * Returns the index of the smallest element in a subset of the 'lines_lengths' array.
+     *
+     * @param first The start index of the range to search, inclusive.
+     * @param last The end index of the range to search, inclusive.
+     * @return The index of the smallest element within the specified range.
+     *
+     * Example:
+     * Given an array 'lines_lengths' with values [5, 2, 3, 1, 4], calling getIndexOfSmallest(1, 3)
+     * would return 3, as the element at index 3 (value 1) is the smallest in the range 1 to 3.
+     */
     public int getIndexOfSmallest(int first, int last) {
+        // Initialize the minimum value with the element at the starting index 'first'
         int min = lines_lengths[first];
+        // Initialize the index of the minimum element with the starting index 'first'
         int indexOfMin = first;
+        // Loop through the array starting from the next element after 'first' up to 'last'
         for (int index = first + 1; index <= last; index++) {
+            //If the current element is smaller than the current minimum
             if (lines_lengths[index] < min) {
+                // Update the minimum value to the current element's value
                 min = lines_lengths[index];
+                // Update the index of the minimum element to the current index
                 indexOfMin = index;
             }
         }
-
+        // Return the index of the smallest element found in the specified range
         return indexOfMin;
     }
 
 
     //////////////////////////////// INSERTION SORT ///////////////////////////////////////////////////
+    /**
+     * Performs an insertion sort on a array `lines_lengths` which contains
+     * integer values representing the lengths of lines. The sorting process is timed, and the
+     * duration is stored in the `SortGUI.insertionTime` static variable. This method is designed
+     * to sort the entire array in ascending order.
+     */
     public void InsertionSort(){
+        // Record the start time of the sorting process.
         Calendar start = Calendar.getInstance();
+        // Perform the sorting operation on the entire array.
         insertionSort(0,total_number_of_lines-1);
+        // Record the end time of the sorting process.
         Calendar end = Calendar.getInstance();
+        // Calculate the duration of the sorting process and store it.
         SortGUI.insertionTime = end.getTime().getTime() - start.getTime().getTime();
     }
 
+    /**
+     * Recursively sorts a segment of the `lines_lengths` array using the insertion sort algorithm.
+     *
+     * @param first The starting index of the segment to be sorted.
+     * @param last The ending index of the segment to be sorted.
+     */
     public void insertionSort(int first,int last){
+        // Base case: if the segment to sort has more than one element
         if(first<last){
+            // Recursively sort the segment from first to last-1
             insertionSort(first,last-1);
+            // Insert the last element of the segment into its correct position
+            // within the sorted array from first to last-1.
             insertInOrder(lines_lengths[last],first,last-1);
+            // Update the GUI to visually represent the current state of the array with 10 ms delay
             paintComponent(this.getGraphics());
             delay(10);
         }
     }
 
+    /**
+     * Inserts an element into its correct position within a sorted segment of the `lines_lengths` array.
+     *
+     * @param removedElement The element to be inserted into the sorted segment.
+     * @param begin The starting index of the sorted segment.
+     * @param end The ending index of the sorted segment.
+     */
     public void insertInOrder(int removedElement,int begin,int end){
+        // Check if the element to insert is greater than or equal to the last element of the sorted segment
         if(removedElement>=lines_lengths[end]){
+            // Place the element directly after the last element of the sorted segment
             lines_lengths[end+1]=removedElement;
         }
         else{
+            // Shift the last element of the sorted segment one position to the right
             lines_lengths[end+1]=lines_lengths[end];
+            // If there are more elements in the sorted segment, recursively find the correct position
             if(begin<end){
                 insertInOrder(removedElement,begin,end-1);
             }
             else{
+                // Place the element at the beginning of the sorted segment
                 lines_lengths[end]=removedElement;
             }
         }
@@ -173,9 +244,7 @@ public class SortShow extends JPanel {
         //You need to complete this part.
         tempArray = new int[total_number_of_lines];
 
-        System.out.println(Arrays.toString(lines_lengths));
         R_MergeSort(0,total_number_of_lines-1);
-        System.out.println(Arrays.toString(tempArray));
 
         Calendar end = Calendar.getInstance();
         //getting the time it took for the iterative merge sort to execute
@@ -343,6 +412,13 @@ public class SortShow extends JPanel {
 
     //////////////////////////////// SHELL SORT ///////////////////////////////////////////////////
 
+    /**
+     * Performs a Shell Sort on the global array `lines_lengths`, which contains
+     * integer values representing the lengths of lines. The Shell Sort algorithm is an
+     * optimization over the simple insertion sort algorithm that allows the exchange of
+     * items that are far apart. The goal is to reduce the total number of moving operations.
+     * The sorting process's duration is calculated and stored in `SortGUI.shellTime`.
+     */
     public  void ShellSort(){
         //start time
         Calendar start = Calendar.getInstance();
@@ -362,6 +438,14 @@ public class SortShow extends JPanel {
         SortGUI.shellTime = end.getTime().getTime() - start.getTime().getTime();
     }
 
+    /**
+     * Performs an incremental insertion sort on a specified range of the `lines_lengths` array,
+     * considering a specific gap between elements. This method is a part of the Shell Sort algorithm.
+     *
+     * @param first The starting index of the range to be sorted.
+     * @param last The ending index of the range to be sorted.
+     * @param space The gap between elements to be considered during the sort.
+     */
     public void incrementalInsertionSort(int first,int last,int space){
         int unSorted,index;
         // Iterate over elements, jumping by space to perform insertion sort
@@ -379,6 +463,11 @@ public class SortShow extends JPanel {
 
     }
     //////////////////////////////// QUICK SORT RECURSIVE ///////////////////////////////////////////////////
+    /**
+     * Performs a Quick Sort on the global array `lines_lengths`. This method captures the start and end
+     * times of the sorting process to calculate and update the sorting duration in `SortGUI.shellTime`.
+     * The method initiates a recursive quick sort algorithm to sort the entire array.
+     */
     public void R_QuickSort(){
         //capture start time of quick sort
         Calendar start = Calendar.getInstance();
@@ -393,6 +482,13 @@ public class SortShow extends JPanel {
         SortGUI.shellTime = end.getTime().getTime() - start.getTime().getTime();
     }
 
+    /**
+     * Recursively sorts a specified segment of the `lines_lengths` array using the Quick Sort algorithm.
+     * For partitions smaller than a threshold (here, 3 elements), an insertion sort is used for efficiency.
+     *
+     * @param first The starting index of the segment to be sorted.
+     * @param last The ending index of the segment to be sorted.
+     */
     public void R_QuickSort(int first,int last){
         paintComponent(this.getGraphics());
         delay(10);
@@ -413,24 +509,40 @@ public class SortShow extends JPanel {
         }
     }
 
+    /**
+     * Partitions a segment of the `lines_lengths` array for the Quick Sort algorithm, selecting a pivot
+     * and rearranging elements such that those less than the pivot i.e. 'E' are moved before it i.e 'L', and those greater
+     * are moved after it i.e. 'G'. The method returns the final index of the pivot element after partitioning.
+     *
+     * @param first The starting index of the segment to partition.
+     * @param last The ending index of the segment to partition.
+     * @return The final index of the pivot element.
+     */
     public int partition(int first,int last){
+        // Choose the middle element as the pivot
         int mid = first+(last-first)/2;
+        // Sort the first, middle, and last elements and use the middle as the pivot
         sortFirstMiddleLast(first,mid,last);
+        // Move the pivot to the second to last position
         swap(mid,last-1);
         int pivotIndex=last-1;
 
         int pivotValue = lines_lengths[pivotIndex];
 
+        // Start searching for the crossing point from both ends
         int indexFromLeft = first+1;
         int indexFromRight = last -2;
 
         boolean done=false;
         while(!done){
+            // Move from left to right as long as elements are less than the pivot
             while(lines_lengths[indexFromLeft] < pivotValue)
                 indexFromLeft++;
+            // Move from right to left as long as elements are greater than the pivot
             while(lines_lengths[indexFromRight] > pivotValue)
                 indexFromRight--;
 
+            // If the indices have not crossed, swap elements and continue
             if(indexFromLeft<indexFromRight){
                 swap(indexFromLeft,indexFromRight);
                 indexFromLeft++;
@@ -440,19 +552,39 @@ public class SortShow extends JPanel {
                 done=true;
             }
         }
+        // Place the pivot in its correct position and return its index
         swap(pivotIndex,indexFromLeft);
         pivotIndex=indexFromLeft;
 
         return pivotIndex;
     }
 
+    /**
+     * Sorts the first, middle, and last elements of a segment in the `lines_lengths` array
+     * and ensures that the median of the three is in the middle position.
+     *
+     * @param first The index of the first element.
+     * @param mid The index of the middle element.
+     * @param last The index of the last element.
+     */
     private void sortFirstMiddleLast(int first,int mid,int last){
+        // Ensure the first is less than the middle
         order(first,mid);
+        // Ensure the middle is less than the last
         order(mid,last);
+        // Ensure the first is less than the middle again in case the last was smaller than both
         order(first,mid);
     }
 
+    /**
+     * Ensures that two specified elements in the `lines_lengths` array are in ascending order.
+     * If not, they are swapped.
+     *
+     * @param first The index of the first element to compare.
+     * @param last The index of the second element to compare.
+     */
     private void order(int first,int last){
+        // If the first element is greater than the last, swap them
         if(lines_lengths[first]>lines_lengths[last])
             swap(first,last);
     }
